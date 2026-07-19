@@ -1,0 +1,868 @@
+<!doctype html>
+<html lang="pt-PT">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Viagem aos Açores</title>
+  <style>
+    :root {
+      --ink: #10211d;
+      --muted: #5c6f68;
+      --panel: rgba(255, 255, 255, .78);
+      --panel-strong: rgba(255, 255, 255, .9);
+      --line: rgba(255, 255, 255, .34);
+      --line-dark: rgba(30, 48, 43, .12);
+      --green: #2f745c;
+      --blue: #1f7296;
+      --amber: #be762f;
+      --red: #a9463f;
+      --shadow: 0 22px 70px rgba(7, 24, 22, .24);
+      --radius: 8px;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      color: var(--ink);
+      background:
+        linear-gradient(180deg, rgba(5, 18, 24, .40), rgba(5, 18, 24, .78)),
+        url("https://commons.wikimedia.org/wiki/Special:FilePath/Sao%20Miguel%20-%20Lagoa%20do%20Fogo.jpg");
+      background-attachment: fixed;
+      background-size: cover;
+      background-position: center;
+      font-family: "Segoe UI", Arial, sans-serif;
+      line-height: 1.5;
+    }
+
+    button {
+      border: 1px solid rgba(255,255,255,.42);
+      background: rgba(255,255,255,.72);
+      color: var(--ink);
+      border-radius: 7px;
+      padding: .58rem .78rem;
+      cursor: pointer;
+      font: inherit;
+    }
+    button:hover { background: rgba(255,255,255,.92); }
+    button[aria-selected="true"] { background: var(--green); color: #fff; border-color: var(--green); }
+
+    main {
+      width: min(1180px, calc(100% - 2rem));
+      margin: 0 auto;
+      padding: clamp(1rem, 3vw, 2rem) 0 3rem;
+    }
+
+    .summary {
+      min-height: min(92vh, 780px);
+      display: grid;
+      align-content: start;
+      gap: 1rem;
+      padding-top: clamp(.5rem, 2vw, 1.5rem);
+    }
+    .top-card {
+      display: grid;
+      gap: 1.3rem;
+      grid-template-columns: 1.15fr .85fr;
+      background: rgba(255,255,255,.80);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(22px) saturate(1.08);
+      padding: clamp(1rem, 3vw, 2rem);
+    }
+    .kicker {
+      display: inline-flex;
+      width: fit-content;
+      border-radius: 999px;
+      padding: .32rem .72rem;
+      background: rgba(47, 116, 92, .13);
+      color: #245443;
+      font-weight: 700;
+      font-size: .88rem;
+    }
+    h1 {
+      margin: .35rem 0 .7rem;
+      font-size: clamp(2.6rem, 8vw, 5.7rem);
+      line-height: .92;
+      letter-spacing: 0;
+    }
+    h2 { margin: 0; font-size: clamp(1.45rem, 3vw, 2.05rem); line-height: 1.1; }
+    h3 { margin: 0 0 .45rem; font-size: 1.04rem; }
+    p { margin: .35rem 0 0; }
+    .muted { color: var(--muted); }
+
+    .nav-strip {
+      display: flex;
+      flex-wrap: wrap;
+      gap: .45rem;
+      margin-top: 1.2rem;
+    }
+    .nav-strip a {
+      text-decoration: none;
+      color: var(--ink);
+      border: 1px solid rgba(30, 48, 43, .13);
+      background: rgba(255,255,255,.56);
+      border-radius: 999px;
+      padding: .48rem .72rem;
+      font-weight: 650;
+    }
+
+    .key-list {
+      display: grid;
+      gap: .72rem;
+    }
+    .key-item {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: .75rem;
+      align-items: start;
+      padding: .78rem;
+      border: 1px solid var(--line-dark);
+      border-radius: 7px;
+      background: rgba(255,255,255,.48);
+    }
+    .key-icon {
+      width: 2.15rem;
+      height: 2.15rem;
+      display: grid;
+      place-items: center;
+      border-radius: 7px;
+      background: rgba(31, 114, 150, .13);
+      font-weight: 800;
+      color: #19546e;
+    }
+
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+      gap: 1rem;
+    }
+    .stat, .card {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(18px) saturate(1.1);
+      overflow: hidden;
+    }
+    .stat { padding: 1rem; min-height: 8.2rem; display: grid; align-content: space-between; }
+    .stat small, .meta small { display: block; color: var(--muted); }
+    .stat strong {
+      display: block;
+      font-size: clamp(1.45rem, 4vw, 2.2rem);
+      line-height: 1.05;
+      margin: .45rem 0;
+    }
+
+    section {
+      padding: 1.5rem 0;
+      scroll-margin-top: 1rem;
+    }
+    .section-head {
+      color: #fff;
+      display: flex;
+      align-items: end;
+      justify-content: space-between;
+      gap: 1rem;
+      margin-bottom: .85rem;
+      text-shadow: 0 1px 20px rgba(0,0,0,.28);
+    }
+    .section-head .muted { color: rgba(255,255,255,.78); }
+
+    .grid { display: grid; gap: 1rem; }
+    .grid.two { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .grid.three { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    .pad { padding: 1rem; }
+    .status {
+      display: inline-flex;
+      width: fit-content;
+      border-radius: 999px;
+      padding: .22rem .58rem;
+      background: rgba(31, 114, 150, .12);
+      color: #18526f;
+      font-size: .82rem;
+      font-weight: 700;
+    }
+    .status.ok { background: rgba(47, 116, 92, .13); color: #245443; }
+    .status.warn { background: rgba(190, 118, 47, .16); color: #814b17; }
+    .status.bad { background: rgba(169, 70, 63, .14); color: #80342e; }
+
+    .progress {
+      height: .65rem;
+      border-radius: 999px;
+      background: rgba(16, 33, 29, .12);
+      overflow: hidden;
+      margin: .7rem 0;
+    }
+    .progress span {
+      display: block;
+      width: var(--pct);
+      height: 100%;
+      background: linear-gradient(90deg, var(--green), var(--blue));
+    }
+
+    .timeline { display: grid; gap: .82rem; position: relative; }
+    .event {
+      display: grid;
+      grid-template-columns: 6.8rem 1fr;
+      gap: .8rem;
+      align-items: stretch;
+    }
+    .event-date {
+      color: #fff;
+      border: 1px solid rgba(255,255,255,.28);
+      border-radius: 7px;
+      padding: .7rem;
+      background: rgba(9, 29, 35, .42);
+      backdrop-filter: blur(12px);
+      font-weight: 800;
+    }
+
+    .media {
+      min-height: 14rem;
+      background-size: cover;
+      background-position: center;
+      background-color: rgba(255,255,255,.35);
+    }
+    .accommodation {
+      display: grid;
+      grid-template-columns: 1.05fr .95fr;
+      min-height: 23rem;
+    }
+    .photo-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: .5rem;
+      margin-top: .8rem;
+    }
+    .photo-grid div {
+      min-height: 9rem;
+      border-radius: 7px;
+      background-size: cover;
+      background-position: center;
+    }
+    .meta {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: .7rem;
+      margin: 1rem 0;
+    }
+    .meta > div {
+      border: 1px solid var(--line-dark);
+      border-radius: 7px;
+      padding: .72rem;
+      background: rgba(255,255,255,.45);
+    }
+
+    .tabs {
+      display: flex;
+      flex-wrap: wrap;
+      gap: .45rem;
+      margin-bottom: .85rem;
+    }
+    .slide-shell {
+      display: grid;
+      grid-template-columns: minmax(0, 1.15fr) minmax(280px, .85fr);
+      gap: 1rem;
+      align-items: stretch;
+    }
+    .slide-photo {
+      min-height: 33rem;
+      background-size: cover;
+      background-position: center;
+      position: relative;
+    }
+    .slide-photo::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, transparent 35%, rgba(0,0,0,.64));
+    }
+    .caption {
+      position: absolute;
+      z-index: 1;
+      left: 1rem;
+      right: 1rem;
+      bottom: 1rem;
+      color: #fff;
+      display: flex;
+      align-items: end;
+      justify-content: space-between;
+      gap: 1rem;
+    }
+    .caption h3 {
+      font-size: clamp(1.7rem, 5vw, 3rem);
+      line-height: 1;
+      margin: .35rem 0 0;
+    }
+    .slide-controls { display: flex; gap: .5rem; align-items: center; }
+
+    .list { display: grid; gap: .72rem; }
+    .row {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 1rem;
+      align-items: center;
+      padding: .82rem;
+      border: 1px solid var(--line-dark);
+      border-radius: 7px;
+      background: rgba(255,255,255,.45);
+    }
+    .money { text-align: right; font-variant-numeric: tabular-nums; font-weight: 800; }
+    .table-wrap { overflow-x: auto; }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background: rgba(255,255,255,.45);
+    }
+    th, td {
+      padding: .78rem;
+      border-bottom: 1px solid rgba(30,48,43,.12);
+      text-align: left;
+      vertical-align: top;
+    }
+    th { color: var(--muted); font-size: .86rem; }
+    td:last-child, th:last-child { text-align: right; }
+
+    @media (max-width: 900px) {
+      .top-card, .grid.two, .grid.three, .accommodation, .slide-shell { grid-template-columns: 1fr; }
+      .summary { min-height: auto; }
+      .slide-photo { min-height: 24rem; }
+    }
+    @media (max-width: 560px) {
+      main { width: min(100% - 1rem, 1180px); }
+      .top-card { padding: 1rem; }
+      .event { grid-template-columns: 1fr; }
+      .meta, .row { grid-template-columns: 1fr; }
+      .money { text-align: left; }
+      .photo-grid { grid-template-columns: 1fr; }
+      .caption { align-items: start; flex-direction: column; }
+      .tabs button { flex: 1 1 auto; }
+    }
+    @media print {
+      body { background: #fff; }
+      .section-head { color: var(--ink); text-shadow: none; }
+      .section-head .muted { color: var(--muted); }
+      .card, .stat, .top-card { box-shadow: none; backdrop-filter: none; break-inside: avoid; }
+      .slide-controls, .tabs, .nav-strip { display: none; }
+      .slide-photo, .media { min-height: 10rem; print-color-adjust: exact; }
+      .summary { min-height: auto; }
+    }
+	
+	#summarySubtitle { padding-top: 2rem }
+  </style>
+</head>
+<body>
+  <main>
+    <section class="summary" id="resumo">
+      <div class="top-card">
+        <div>
+          <span class="kicker" id="summaryDates"></span>
+          <h1 id="summaryTitle"></h1>
+          <p id="summarySubtitle"></p>
+          <nav class="nav-strip" aria-label="Secções da viagem">
+            <a href="#agenda">Agenda</a>
+            <a href="#voos">Voos</a>
+            <a href="#alojamento">Alojamento</a>
+            <a href="#carro">Carro</a>
+            <a href="#interesses">Locais</a>
+            <a href="#comidas">Comidas</a>
+            <a href="#orcamento">Pagamentos</a>
+          </nav>
+        </div>
+        <div class="key-list" id="keyInfo"></div>
+      </div>
+      <div class="stats" id="summaryCards"></div>
+    </section>
+
+    <section id="agenda">
+      <div class="section-head">
+        <div>
+          <h2>Agenda prevista</h2>
+          <p class="muted">Voos, check-in, carro, visitas e provas já planeadas.</p>
+        </div>
+      </div>
+      <div class="timeline" id="timeline"></div>
+    </section>
+
+    <section id="voos">
+      <div class="section-head">
+        <div>
+          <h2>Voos</h2>
+          <p class="muted">Horários, aeroportos, reservas e estado de pagamento.</p>
+        </div>
+      </div>
+      <div class="grid two" id="flights"></div>
+    </section>
+
+    <section id="alojamento">
+      <div class="section-head">
+        <div>
+          <h2>Alojamento</h2>
+          <p class="muted">Morada, contactos, horários, valores e fotografias.</p>
+        </div>
+      </div>
+      <div class="card accommodation" id="stay"></div>
+    </section>
+
+    <section id="carro">
+      <div class="section-head">
+        <div>
+          <h2>Carro alugado</h2>
+          <p class="muted">Recolha, entrega, condutor, caução e custos previstos.</p>
+        </div>
+      </div>
+      <div class="grid two" id="car"></div>
+    </section>
+
+    <section id="interesses">
+      <div class="section-head">
+        <div>
+          <h2>Zonas de interesse</h2>
+          <p class="muted">Locais a visitar com custo, data prevista, descrição e dicas.</p>
+        </div>
+      </div>
+      <div class="tabs" id="interestTabs" role="tablist" aria-label="Locais a visitar"></div>
+      <div class="slide-shell">
+        <article class="card slide-photo" id="interestPhoto"></article>
+        <aside class="card pad" id="interestDetails"></aside>
+      </div>
+    </section>
+
+    <section id="comidas">
+      <div class="section-head">
+        <div>
+          <h2>Comidas para provar</h2>
+          <p class="muted">Sabores a experimentar com local sugerido, custo e data prevista.</p>
+        </div>
+      </div>
+      <div class="tabs" id="foodTabs" role="tablist" aria-label="Comidas para provar"></div>
+      <div class="slide-shell">
+        <article class="card slide-photo" id="foodPhoto"></article>
+        <aside class="card pad" id="foodDetails"></aside>
+      </div>
+    </section>
+
+    <section id="orcamento">
+      <div class="section-head">
+        <div>
+          <h2>Pagamentos e orçamento</h2>
+          <p class="muted">Valores pagos, pendentes, responsáveis e próximos passos.</p>
+        </div>
+      </div>
+      <div class="grid two">
+        <div class="card pad">
+          <h3>Estado do orçamento</h3>
+          <div class="progress" aria-label="Percentagem paga"><span id="paidProgress"></span></div>
+          <p class="muted" id="paidText"></p>
+        </div>
+        <div class="card pad">
+          <h3>Próximas ações</h3>
+          <div class="list" id="actions"></div>
+        </div>
+      </div>
+      <div class="card table-wrap" style="margin-top:1rem">
+        <table>
+          <thead>
+            <tr><th>Item</th><th>Responsável</th><th>Estado</th><th>Notas</th><th>Valor</th></tr>
+          </thead>
+          <tbody id="payments"></tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    const data = {
+      trip: {
+        title: "Açores",
+        groupName: "Açores com amigos",
+        dates: "15 a 23 de Agosto",
+        subtitle: "Plano de leitura rápida para manter datas, reservas, custos, alojamento, carro, locais a visitar e comidas a provar no mesmo sítio.",
+        friends: "Bruno, Daniela, Armando, Pedro e Fátima",
+        island: "Ponta Delgada",
+        emergency: "112; Hospital do Divino Espírito Santo: +351 296 203 000",
+        notes: "Confirmar bagagem, seguros, caução do carro, hora limite de check-in e restaurantes que exigem reserva."
+      },
+      accommodation: {
+        name: "Casa Atlântica - Ponta Delgada",
+        address: "Rua exemplo, Ponta Delgada",
+        checkIn: "12 set, 16:00",
+        checkOut: "18 set, 11:00",
+        host: "Anfitrião: por preencher",
+        total: 780,
+        paid: 390,
+        notes: "Tem cozinha, máquina de lavar, estacionamento próximo e espaço para refeições em grupo. Confirmar taxa turística e política de cancelamento.",
+        photos: [
+          "https://commons.wikimedia.org/wiki/Special:FilePath/Ponta%20Delgada%2C%20Azores%20-%20panoramio%20%281%29.jpg",
+          "https://commons.wikimedia.org/wiki/Special:FilePath/Ponta%20Delgada%20Azores%20Portugal.jpg",
+          "https://commons.wikimedia.org/wiki/Special:FilePath/Sao%20Miguel%20-%20Lagoa%20do%20Fogo.jpg",
+          "https://commons.wikimedia.org/wiki/Special:FilePath/Lagoa%20do%20fogo.jpg"
+        ]
+      },
+      car: {
+        company: "Rent-a-car por confirmar",
+        model: "Grupo compacto, 5 lugares",
+        pickup: "Aeroporto PDL, 12 set, 13:00",
+        dropoff: "Aeroporto PDL, 18 set, 10:00",
+        driver: "Condutor principal por definir",
+        total: 315,
+        paid: 100,
+        deposit: 900,
+        fuel: "Cheio-cheio",
+        notes: "Confirmar segundo condutor, franquia, Via Verde, política de combustível e cartão de crédito para caução."
+      },
+      flights: [
+        { kind: "Ida", date: "12 set", from: "Lisboa (LIS)", to: "Ponta Delgada (PDL)", depart: "10:25", arrive: "11:50", airline: "SATA / TAP", booking: "ABC123", cost: 145, paid: true, notes: "Chegar ao aeroporto 2h antes." },
+        { kind: "Volta", date: "18 set", from: "Ponta Delgada (PDL)", to: "Lisboa (LIS)", depart: "12:45", arrive: "16:05", airline: "SATA / TAP", booking: "ABC123", cost: 138, paid: false, notes: "Confirmar bagagem de porão." }
+      ],
+      interests: [
+        {
+          name: "Sete Cidades",
+          island: "São Miguel",
+          cost: "Gratuito",
+          plannedDate: "13 set, manhã",
+          duration: "Meio dia",
+          priority: "Imperdível",
+          image: "https://commons.wikimedia.org/wiki/Special:FilePath/Sete%20Cidades%20%2825339482645%29.jpg",
+          description: "Miradouros sobre as lagoas Azul e Verde, estrada cénica e paragens para fotos. Boa opção para começar a viagem se o tempo estiver limpo.",
+          tips: "Verificar webcam antes de sair; levar casaco leve e reservar tempo para o Miradouro da Boca do Inferno."
+        },
+        {
+          name: "Lagoa do Fogo",
+          island: "São Miguel",
+          cost: "Gratuito",
+          plannedDate: "14 set, tarde",
+          duration: "2 a 3 horas",
+          priority: "Alta",
+          image: "https://commons.wikimedia.org/wiki/Special:FilePath/Sao%20Miguel%20-%20Lagoa%20do%20Fogo.jpg",
+          description: "Cratera vulcânica com uma das paisagens mais fortes da ilha. Pode combinar com Caldeira Velha ou Ribeira Grande.",
+          tips: "Estacionamento limitado em época alta; confirmar regras de acesso sazonal."
+        },
+        {
+          name: "Furnas e Terra Nostra",
+          island: "São Miguel",
+          cost: "Pago",
+          plannedDate: "15 set",
+          duration: "Dia completo",
+          priority: "Imperdível",
+          image: "https://commons.wikimedia.org/wiki/Special:FilePath/Furnas%20Azores.jpg",
+          description: "Jardim Terra Nostra, águas termais, fumarolas e cozido das Furnas. É a zona ideal para reservar restaurante com antecedência.",
+          tips: "Levar fato de banho escuro, toalha e chinelos. Validar horários do parque."
+        },
+        {
+          name: "Ilhéu de Vila Franca",
+          island: "São Miguel",
+          cost: "Barco pago",
+          plannedDate: "16 set, manhã",
+          duration: "3 horas",
+          priority: "Média",
+          image: "https://commons.wikimedia.org/wiki/Special:FilePath/Ilh%C3%A9u%20de%20Vila%20Franca%20do%20Campo%2C%20S%C3%A3o%20Miguel%2C%20A%C3%A7ores.JPG",
+          description: "Reserva natural com piscina circular no mar. Depende muito do estado do mar e dos bilhetes disponíveis.",
+          tips: "Comprar bilhetes cedo; levar água, protetor solar e saco estanque."
+        },
+        {
+          name: "Observação de baleias",
+          island: "São Miguel",
+          cost: "Pago",
+          plannedDate: "Por marcar",
+          duration: "3 horas",
+          priority: "Opcional",
+          image: "https://commons.wikimedia.org/wiki/Special:FilePath/Whale%20Watching%20in%20the%20Azores.jpg",
+          description: "Atividade em barco com guias locais. Boa alternativa para uma manhã com mar calmo.",
+          tips: "Comparar operadores, políticas de cancelamento e probabilidade de enjoo."
+        }
+      ],
+      foods: [
+        {
+          name: "Cozido das Furnas",
+          local: "Furnas",
+          cost: "Pago",
+          plannedDate: "15 set, almoço",
+          place: "Restaurante Tony's ou Caldeiras & Vulcões",
+          priority: "Imperdível",
+          image: "https://commons.wikimedia.org/wiki/Special:FilePath/Cozido%20das%20Furnas%20%2850687782641%29.jpg",
+          description: "Prato cozinhado lentamente com o calor vulcânico das caldeiras. É uma das experiências gastronómicas mais típicas de São Miguel.",
+          tips: "Reservar com antecedência e confirmar hora de levantamento do cozido."
+        },
+        {
+          name: "Queijadas da Vila",
+          local: "Vila Franca do Campo",
+          cost: "Baixo",
+          plannedDate: "16 set",
+          place: "Fábrica das Queijadas da Vila",
+          priority: "Alta",
+          image: "https://commons.wikimedia.org/wiki/Special:FilePath/Queijadas%20aus%20Vila%20Franca%20do%20Campo%2C%20Azoren%202016.JPG",
+          description: "Doce tradicional pequeno, cremoso e fácil de levar para uma pausa durante o passeio.",
+          tips: "Comprar uma caixa para partilhar no carro ou levar para o alojamento."
+        },
+        {
+          name: "Lapas grelhadas",
+          local: "Rabo de Peixe",
+          cost: "Pago",
+          plannedDate: "Por marcar",
+          place: "Restaurante junto ao mar",
+          priority: "Alta",
+          image: "https://commons.wikimedia.org/wiki/Special:FilePath/Lapas%20grelhadas%2C%20Rabo%20de%20Peixe%20A%C3%A7ores.jpg",
+          description: "Marisco simples e muito típico, servido quente com alho, limão e molho. Boa opção para petisco de fim de tarde.",
+          tips: "Pedir para partilhar e confirmar se há disponibilidade no dia."
+        },
+        {
+          name: "Ananás dos Açores",
+          local: "Fajã de Baixo",
+          cost: "Baixo",
+          plannedDate: "Por marcar",
+          place: "Plantação de ananases",
+          priority: "Média",
+          image: "https://commons.wikimedia.org/wiki/Special:FilePath/Azorean%20pineapple%20Ponta%20Delgada%2C%20S%C3%A3o%20Miguel%2C%20Azores%20%28A%C3%A7ores%29%20Archipelago%2C%20Portugal%20%2849051108891%29.jpg",
+          description: "Visita curta a estufas de ananás, com prova de fruta, compotas ou licor.",
+          tips: "Combina bem com uma manhã leve em Ponta Delgada."
+        }
+      ],
+      payments: [
+        { item: "Voos ida", owner: "Cada pessoa", amount: 145, paid: 145, status: "Pago", notes: "Guardar cartões de embarque." },
+        { item: "Voos volta", owner: "Cada pessoa", amount: 138, paid: 0, status: "Por pagar", notes: "Confirmar antes do prazo." },
+        { item: "Alojamento", owner: "Bruno", amount: 780, paid: 390, status: "Parcial", notes: "Acertar saldo até ao check-in." },
+        { item: "Carro alugado", owner: "Miguel", amount: 315, paid: 100, status: "Parcial", notes: "Caução não incluída no custo." },
+        { item: "Terra Nostra", owner: "Grupo", amount: 64, paid: 0, status: "Por pagar", notes: "Estimativa para 4 pessoas." }
+      ],
+      actions: [
+        "Confirmar nomes completos e documentos nos voos.",
+        "Fechar seguro e segundo condutor do carro.",
+        "Reservar cozido das Furnas se o grupo quiser almoço tradicional.",
+        "Validar meteorologia antes de fixar Sete Cidades e Lagoa do Fogo."
+      ]
+    };
+
+    let activeInterest = 0;
+    let activeFood = 0;
+
+    function euro(value) {
+      return new Intl.NumberFormat("pt-PT", { style: "currency", currency: "EUR" }).format(Number(value || 0));
+    }
+
+    function pct(paid, total) {
+      return total ? Math.max(0, Math.min(100, Math.round((paid / total) * 100))) : 0;
+    }
+
+    function img(url) {
+      return `background-image: linear-gradient(180deg, rgba(0,0,0,.04), rgba(0,0,0,.20)), url("${url}")`;
+    }
+
+    function totals() {
+      const values = data.payments.reduce((acc, p) => {
+        acc.total += Number(p.amount || 0);
+        acc.paid += Number(p.paid || 0);
+        return acc;
+      }, { total: 0, paid: 0 });
+      values.remaining = Math.max(0, values.total - values.paid);
+      return values;
+    }
+
+    function render() {
+      const t = totals();
+      const paidRatio = pct(t.paid, t.total);
+      document.getElementById("summaryDates").textContent = `${data.trip.dates} · ${data.trip.island}`;
+      document.getElementById("summaryTitle").textContent = data.trip.title;
+      document.getElementById("summarySubtitle").textContent = data.trip.subtitle;
+      document.getElementById("keyInfo").innerHTML = [
+        ["Datas", data.trip.dates, "01"],
+        ["Grupo", data.trip.friends, "02"],
+        ["Base", `${data.trip.island} · ${data.accommodation.name}`, "03"],
+        ["Emergência", data.trip.emergency, "04"]
+      ].map(i => `<div class="key-item"><div class="key-icon">${i[2]}</div><div><strong>${i[0]}</strong><p class="muted">${i[1]}</p></div></div>`).join("");
+      document.getElementById("summaryCards").innerHTML = [
+        ["Orçamento", euro(t.total), `${paidRatio}% já pago`],
+        ["Por pagar", euro(t.remaining), "Saldo estimado"],
+        ["Voos", data.flights.length, "Segmentos registados"],
+        ["Locais", data.interests.length, "Zonas no plano"],
+        ["Comidas", data.foods.length, "Sabores a provar"]
+      ].map(s => `<article class="stat"><small>${s[0]}</small><strong>${s[1]}</strong><span class="muted">${s[2]}</span></article>`).join("");
+
+      renderTimeline();
+      renderFlights();
+      renderStay();
+      renderCar();
+      renderInterests();
+      renderFoods();
+      renderPayments();
+    }
+
+    function renderTimeline() {
+      const items = [
+        ...data.flights.map(f => ({ date: f.date, title: `Voo ${f.kind}: ${f.from} - ${f.to}`, detail: `${f.depart} - ${f.arrive} · ${f.airline}` })),
+        { date: data.accommodation.checkIn, title: `Check-in: ${data.accommodation.name}`, detail: data.accommodation.address },
+        { date: data.car.pickup, title: `Recolha do carro: ${data.car.company}`, detail: data.car.model },
+        ...data.interests.filter(i => i.plannedDate && i.plannedDate.toLowerCase() !== "por marcar").map(i => ({ date: i.plannedDate, title: i.name, detail: `${i.duration} · ${i.cost}` })),
+        ...data.foods.filter(i => i.plannedDate && i.plannedDate.toLowerCase() !== "por marcar").map(i => ({ date: i.plannedDate, title: `Provar: ${i.name}`, detail: `${i.local} · ${i.cost}` })),
+        { date: data.accommodation.checkOut, title: "Check-out", detail: data.accommodation.name },
+        { date: data.car.dropoff, title: "Entrega do carro", detail: data.car.company }
+      ];
+      document.getElementById("timeline").innerHTML = items.map(item => `
+        <article class="event">
+          <div class="event-date">${item.date}</div>
+          <div class="card pad"><h3>${item.title}</h3><p class="muted">${item.detail}</p></div>
+        </article>
+      `).join("");
+    }
+
+    function renderFlights() {
+      document.getElementById("flights").innerHTML = data.flights.map(f => `
+        <article class="card pad">
+          <span class="status ${f.paid ? "ok" : "warn"}">${f.paid ? "Pago" : "Por pagar"}</span>
+          <h3>${f.kind} · ${f.date}</h3>
+          <div class="row"><div><strong>${f.from}</strong><p class="muted">Partida ${f.depart}</p></div><div class="money">${euro(f.cost)}</div></div>
+          <div class="row"><div><strong>${f.to}</strong><p class="muted">Chegada ${f.arrive}</p></div><div>${f.airline}</div></div>
+          <p><strong>Reserva:</strong> ${f.booking}</p>
+          <p class="muted">${f.notes}</p>
+        </article>
+      `).join("");
+    }
+
+    function renderStay() {
+      const stay = data.accommodation;
+      document.getElementById("stay").innerHTML = `
+        <div class="media" style='${img(stay.photos[0] || "")}'></div>
+        <div class="pad">
+          <span class="status ${stay.paid >= stay.total ? "ok" : "warn"}">${euro(stay.paid)} pagos de ${euro(stay.total)}</span>
+          <h3>${stay.name}</h3>
+          <p>${stay.address}</p>
+          <div class="meta">
+            <div><small>Check-in</small><strong>${stay.checkIn}</strong></div>
+            <div><small>Check-out</small><strong>${stay.checkOut}</strong></div>
+            <div><small>Contacto</small><strong>${stay.host}</strong></div>
+            <div><small>Por pagar</small><strong>${euro(Math.max(0, stay.total - stay.paid))}</strong></div>
+          </div>
+          <p class="muted">${stay.notes}</p>
+          <div class="photo-grid">${stay.photos.slice(1, 5).map(p => `<div style='${img(p)}'></div>`).join("")}</div>
+        </div>
+      `;
+    }
+
+    function renderCar() {
+      const car = data.car;
+      const info = [
+        ["Empresa", car.company], ["Modelo", car.model], ["Recolha", car.pickup], ["Entrega", car.dropoff],
+        ["Condutor", car.driver], ["Combustível", car.fuel], ["Caução", euro(car.deposit)], ["Por pagar", euro(Math.max(0, car.total - car.paid))]
+      ];
+      document.getElementById("car").innerHTML = `
+        <article class="card pad">
+          <span class="status ${car.paid >= car.total ? "ok" : "warn"}">${euro(car.paid)} pagos de ${euro(car.total)}</span>
+          <h3>${car.company}</h3>
+          <div class="meta">${info.map(i => `<div><small>${i[0]}</small><strong>${i[1]}</strong></div>`).join("")}</div>
+        </article>
+        <article class="card pad">
+          <h3>Notas e cuidados</h3>
+          <p>${car.notes}</p>
+          <div class="progress"><span style="--pct:${pct(car.paid, car.total)}%"></span></div>
+          <p class="muted">${pct(car.paid, car.total)}% do aluguer já pago. A caução é apenas bloqueio previsto, não custo final.</p>
+        </article>
+      `;
+    }
+
+    function renderSlide(collection, activeIndex, tabId, photoId, detailsId, prefix) {
+      const tabs = document.getElementById(tabId);
+      tabs.innerHTML = collection.map((item, index) => `
+        <button type="button" role="tab" aria-selected="${index === activeIndex}" data-index="${index}">${item.name}</button>
+      `).join("");
+      tabs.querySelectorAll("button").forEach(btn => btn.addEventListener("click", () => {
+        if (prefix === "interest") activeInterest = Number(btn.dataset.index);
+        else activeFood = Number(btn.dataset.index);
+        prefix === "interest" ? renderInterests() : renderFoods();
+      }));
+
+      const item = collection[activeIndex] || {};
+      document.getElementById(photoId).style = img(item.image || "");
+      document.getElementById(photoId).innerHTML = `
+        <div class="caption">
+          <div><span class="status">${item.priority || "Plano"}</span><h3>${item.name || "Item"}</h3></div>
+          <div class="slide-controls">
+            <button type="button" id="${prefix}Prev" aria-label="Anterior">&lt;</button>
+            <button type="button" id="${prefix}Next" aria-label="Seguinte">&gt;</button>
+          </div>
+        </div>`;
+
+      const isFood = prefix === "food";
+      document.getElementById(detailsId).innerHTML = `
+        <span class="status ${String(item.cost).toLowerCase().includes("grat") || String(item.cost).toLowerCase().includes("baixo") ? "ok" : "warn"}">${item.cost || "Custo por definir"}</span>
+        <h3>${item.name || "Por definir"}</h3>
+        <p>${item.description || ""}</p>
+        <div class="meta">
+          <div><small>${isFood ? "Zona" : "Ilha / zona"}</small><strong>${isFood ? item.local || "-" : item.island || "-"}</strong></div>
+          <div><small>Data prevista</small><strong>${item.plannedDate || "Por marcar"}</strong></div>
+          <div><small>${isFood ? "Local sugerido" : "Duração"}</small><strong>${isFood ? item.place || "-" : item.duration || "-"}</strong></div>
+          <div><small>Prioridade</small><strong>${item.priority || "-"}</strong></div>
+        </div>
+        <h3>Dicas</h3>
+        <p class="muted">${item.tips || ""}</p>
+      `;
+
+      document.getElementById(`${prefix}Prev`).addEventListener("click", () => {
+        if (prefix === "interest") {
+          activeInterest = (activeInterest - 1 + data.interests.length) % data.interests.length;
+          renderInterests();
+        } else {
+          activeFood = (activeFood - 1 + data.foods.length) % data.foods.length;
+          renderFoods();
+        }
+      });
+      document.getElementById(`${prefix}Next`).addEventListener("click", () => {
+        if (prefix === "interest") {
+          activeInterest = (activeInterest + 1) % data.interests.length;
+          renderInterests();
+        } else {
+          activeFood = (activeFood + 1) % data.foods.length;
+          renderFoods();
+        }
+      });
+    }
+
+    function renderInterests() {
+      if (activeInterest >= data.interests.length) activeInterest = 0;
+      renderSlide(data.interests, activeInterest, "interestTabs", "interestPhoto", "interestDetails", "interest");
+    }
+
+    function renderFoods() {
+      if (activeFood >= data.foods.length) activeFood = 0;
+      renderSlide(data.foods, activeFood, "foodTabs", "foodPhoto", "foodDetails", "food");
+    }
+
+    function renderPayments() {
+      const t = totals();
+      const percent = pct(t.paid, t.total);
+      document.getElementById("paidProgress").style = `--pct:${percent}%`;
+      document.getElementById("paidText").textContent = `${euro(t.paid)} pagos de ${euro(t.total)}. Falta acertar ${euro(t.remaining)}.`;
+      document.getElementById("payments").innerHTML = data.payments.map(p => {
+        const due = Math.max(0, Number(p.amount || 0) - Number(p.paid || 0));
+        const cls = due === 0 ? "ok" : Number(p.paid || 0) > 0 ? "warn" : "bad";
+        return `<tr>
+          <td><strong>${p.item}</strong><br><span class="muted">${euro(p.paid)} pagos</span></td>
+          <td>${p.owner}</td>
+          <td><span class="status ${cls}">${p.status}</span></td>
+          <td>${p.notes}</td>
+          <td><strong>${euro(p.amount)}</strong><br><span class="muted">falta ${euro(due)}</span></td>
+        </tr>`;
+      }).join("");
+      document.getElementById("actions").innerHTML = data.actions.map(a => `<div class="row"><div>${a}</div></div>`).join("");
+    }
+
+    document.addEventListener("keydown", event => {
+      if (event.key === "ArrowLeft") {
+        activeInterest = (activeInterest - 1 + data.interests.length) % data.interests.length;
+        activeFood = (activeFood - 1 + data.foods.length) % data.foods.length;
+        renderInterests();
+        renderFoods();
+      }
+      if (event.key === "ArrowRight") {
+        activeInterest = (activeInterest + 1) % data.interests.length;
+        activeFood = (activeFood + 1) % data.foods.length;
+        renderInterests();
+        renderFoods();
+      }
+    });
+
+    render();
+  </script>
+</body>
+</html>
