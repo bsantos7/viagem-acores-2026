@@ -641,7 +641,7 @@
                 total: 432.27,
                 paid: 432.27,
                 deposit: 2500,
-                fuel: "Cheio",
+                fuelState: "Entregar com depósito cheio",
                 notes: "Confirmar seguros"
             },
             flights: {
@@ -660,13 +660,24 @@
             },
             interests: [
                 {
+                    name: "Ilhéu de Vila Franca",
+                    local: "Furnas",
+                    cost: "Barco pago",
+                    plannedDate: "16 set, manhã",
+                    duration: "3 horas",
+                    priority: "Média",
+                    image: "https://byacores.com/wp-content/uploads/2017/10/ilheu-vila-franca-campo-lchacal.jpg",
+                    description: "Reserva natural com piscina circular no mar. Depende muito do estado do mar e dos bilhetes disponíveis.",
+                    tips: "Comprar bilhetes cedo; levar água, protetor solar e saco estanque."
+                },
+                {
                     name: "Sete Cidades",
                     local: "Furnas",
                     cost: "Gratuito",
                     plannedDate: "13 set, manhã",
                     duration: "Meio dia",
                     priority: "Imperdível",
-                    image: "https://commons.wikimedia.org/wiki/Special:FilePath/Sete%20Cidades%20%2825339482645%29.jpg",
+                    image: "https://byacores.com/wp-content/uploads/2017/10/IMG_8426.jpg",
                     description: "Miradouros sobre as lagoas Azul e Verde, estrada cénica e paragens para fotos. Boa opção para começar a viagem se o tempo estiver limpo.",
                     tips: "Verificar webcam antes de sair; levar casaco leve e reservar tempo para o Miradouro da Boca do Inferno."
                 },
@@ -688,20 +699,9 @@
                     plannedDate: "15 set",
                     duration: "Dia completo",
                     priority: "Imperdível",
-                    image: "https://commons.wikimedia.org/wiki/Special:FilePath/Furnas%20Azores.jpg",
+                    image: "https://byacores.com/wp-content/uploads/2017/09/parque_terra_nostra.jpg",
                     description: "Jardim Terra Nostra, águas termais, fumarolas e cozido das Furnas. É a zona ideal para reservar restaurante com antecedência.",
                     tips: "Levar fato de banho escuro, toalha e chinelos. Validar horários do parque."
-                },
-                {
-                    name: "Ilhéu de Vila Franca",
-                    local: "Furnas",
-                    cost: "Barco pago",
-                    plannedDate: "16 set, manhã",
-                    duration: "3 horas",
-                    priority: "Média",
-                    image: "https://commons.wikimedia.org/wiki/Special:FilePath/Ilh%C3%A9u%20de%20Vila%20Franca%20do%20Campo%2C%20S%C3%A3o%20Miguel%2C%20A%C3%A7ores.JPG",
-                    description: "Reserva natural com piscina circular no mar. Depende muito do estado do mar e dos bilhetes disponíveis.",
-                    tips: "Comprar bilhetes cedo; levar água, protetor solar e saco estanque."
                 },
                 {
                     name: "Observação de baleias",
@@ -710,12 +710,23 @@
                     plannedDate: "Por marcar",
                     duration: "3 horas",
                     priority: "Opcional",
-                    image: "https://commons.wikimedia.org/wiki/Special:FilePath/Whale%20Watching%20in%20the%20Azores.jpg",
+                    image: "https://media-cdn.tripadvisor.com/media/attractions-splice-spp-674x446/0b/93/a8/dc.jpg",
                     description: "Atividade em barco com guias locais. Boa alternativa para uma manhã com mar calmo.",
                     tips: "Comparar operadores, políticas de cancelamento e probabilidade de enjoo."
                 }
             ],
             foods: [
+                {
+                    name: "Ananás dos Açores",
+                    local: "Fajã de Baixo",
+                    cost: "Baixo",
+                    plannedDate: "Por marcar",
+                    place: "Plantação de ananases",
+                    priority: "Média",
+                    image: "https://commons.wikimedia.org/wiki/Special:FilePath/Azorean%20pineapple%20Ponta%20Delgada%2C%20S%C3%A3o%20Miguel%2C%20Azores%20%28A%C3%A7ores%29%20Archipelago%2C%20Portugal%20%2849051108891%29.jpg",
+                    description: "Visita curta a estufas de ananás, com prova de fruta, compotas ou licor.",
+                    tips: "Combina bem com uma manhã leve em Ponta Delgada."
+                },
                 {
                     name: "Cozido das Furnas",
                     local: "Furnas",
@@ -748,17 +759,6 @@
                     image: "https://commons.wikimedia.org/wiki/Special:FilePath/Lapas%20grelhadas%2C%20Rabo%20de%20Peixe%20A%C3%A7ores.jpg",
                     description: "Marisco simples e muito típico, servido quente com alho, limão e molho. Boa opção para petisco de fim de tarde.",
                     tips: "Pedir para partilhar e confirmar se há disponibilidade no dia."
-                },
-                {
-                    name: "Ananás dos Açores",
-                    local: "Fajã de Baixo",
-                    cost: "Baixo",
-                    plannedDate: "Por marcar",
-                    place: "Plantação de ananases",
-                    priority: "Média",
-                    image: "https://commons.wikimedia.org/wiki/Special:FilePath/Azorean%20pineapple%20Ponta%20Delgada%2C%20S%C3%A3o%20Miguel%2C%20Azores%20%28A%C3%A7ores%29%20Archipelago%2C%20Portugal%20%2849051108891%29.jpg",
-                    description: "Visita curta a estufas de ananás, com prova de fruta, compotas ou licor.",
-                    tips: "Combina bem com uma manhã leve em Ponta Delgada."
                 }
             ],
             /*payments: [
@@ -874,7 +874,7 @@
             const car = data.car;
             const info = [
                 ["Empresa", car.company], ["Modelo", car.model], ["Recolha", car.pickupPlace + " " + car.pickupTime], ["Entrega", car.dropoffPlace + " " + car.dropoffTime],
-                ["Combustível", car.fuel], ["Caução", euro(car.deposit)], /*["Por pagar", euro(Math.max(0, car.total - car.paid))]*/
+                ["Estado do combustível", car.fuelState], ["Caução", euro(car.deposit)], /*["Por pagar", euro(Math.max(0, car.total - car.paid))]*/
             ];
             document.getElementById("car").innerHTML = `
         <article class="card pad">
