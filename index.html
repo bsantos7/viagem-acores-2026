@@ -300,9 +300,9 @@
     td:last-child, th:last-child { text-align: right; }
 
     @media (max-width: 900px) {
-      /*.top-card, .grid.two, .grid.three, .accommodation, .slide-shell { grid-template-columns: 1fr; }
+      .top-card, .grid.two, .grid.three, .accommodation, .slide-shell { grid-template-columns: 1fr; }
       .summary { min-height: auto; }
-      .slide-photo { min-height: 24rem; }*/
+      .slide-photo { min-height: 24rem; }
 	  .nav-strip a { width: 100% }
     }
 	
@@ -387,7 +387,7 @@
           <h2>Carro alugado</h2>
         </div>
       </div>
-      <div class="grid two" id="car"></div>
+      <div class="grid" id="car"></div>
     </section>
 
     <section id="interesses">
@@ -596,13 +596,13 @@
           tips: "Combina bem com uma manhã leve em Ponta Delgada."
         }
       ],
-      payments: [
+      /*payments: [
         { item: "Voos ida", owner: "Cada pessoa", amount: 145, paid: 145, status: "Pago", notes: "Guardar cartões de embarque." },
         { item: "Voos volta", owner: "Cada pessoa", amount: 138, paid: 0, status: "Por pagar", notes: "Confirmar antes do prazo." },
         { item: "Alojamento", owner: "Bruno", amount: 780, paid: 390, status: "Parcial", notes: "Acertar saldo até ao check-in." },
         { item: "Carro alugado", owner: "Miguel", amount: 315, paid: 100, status: "Parcial", notes: "Caução não incluída no custo." },
         { item: "Terra Nostra", owner: "Grupo", amount: 64, paid: 0, status: "Por pagar", notes: "Estimativa para 4 pessoas." }
-      ],
+      ],*/
       actions: [
         "Confirmar nomes completos e documentos nos voos.",
         "Fechar seguro e segundo condutor do carro.",
@@ -715,12 +715,7 @@
         <article class="card pad">
           <span class="status ${car.paid >= car.total ? "ok" : "warn"}">${euro(car.paid)} pagos de ${euro(car.total)}</span>
           <div class="meta">${info.map(i => `<div><small>${i[0]}</small><strong>${i[1]}</strong></div>`).join("")}</div>
-        </article>
-        <article class="card pad">
-          <h3>Notas e cuidados</h3>
-          <p>${car.notes}</p>
-          <div class="progress"><span style="--pct:${pct(car.paid, car.total)}%"></span></div>
-          <p class="muted">${pct(car.paid, car.total)}% do aluguer já pago. A caução é apenas bloqueio previsto, não custo final.</p>
+          <br><div><div><h3>Notas</h3><p>${car.notes}</p></div></div>
         </article>
       `;
     }
