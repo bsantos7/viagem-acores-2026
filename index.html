@@ -7,14 +7,12 @@
     <title>Açores 2026</title>
     <style>
         :root {
+            --primary: #2C5763;
+            --secondary: #EFCB68;
             --ink: #10211D;
             --muted: #5C6F68;
-            --green: #2F745C;
-            --blue: #1F7296;
-            --amber: #BE762F;
-            --red: #A9463F;
             --shadow: 0 22px 70px #071816;
-            --radius: 8px;
+            --smallShadow: 0 6px 18px #071816;
         }
 
         * {
@@ -46,15 +44,24 @@
             font: inherit;
         }
 
-            button:hover {
-                background: white;
+            button[aria-selected="true"] {
+                background: var(--primary);
+                border-color: white;
+                color: white
             }
 
-            button[aria-selected="true"] {
-                background: var(--green);
-                color: #fff;
-                border-color: var(--green);
+            button.nav {
+                color: var(--primary);
+                font-size: 20px
             }
+
+                button.nav.prev {
+                    padding: 3px 12px 3px 10px
+                }
+
+                button.nav.next {
+                    padding: 3px 10px 3px 12px
+                }
 
         main {
             width: 95%;
@@ -62,55 +69,17 @@
             padding: 2% 0;
         }
 
-        .summary {
-            display: grid;
-            align-content: start;
-            gap: 1rem;
-            padding-top: clamp(.5rem, 2vw, 1.5rem);
-        }
-
-        .logo {
-            max-height: 200px;
-            max-width: 600px;
-            width: 100%
-        }
-		
-		.compact {
-			position: fixed;
-			top: 0;
-			left: 0;
-			width: 100%;
-			height: 100px;
-			z-index: 999
-		}
-		
-			.compact .logo {
-				max-height: 50px;
-				max-width: 150px
-			}
-		
-			.compact label {
-				display: none
-			}
-		
-			.compact.top-card {
-				padding: 20px
-			}
-		
-			.compact .nav-strip {
-				display: inline-block;
-				top: -20%;
-				position: relative;
-				left: 5%;
-			}
-		
-        .top-card {
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 70px;
             background: white;
-            border: 1px solid white;
-            border-radius: var(--radius);
-            box-shadow: var(--shadow);
-            padding: clamp(1rem, 3vw, 2rem);
-            text-align: center
+            padding: 0;
+            text-align: center;
+            z-index: 999;
+            box-shadow: var(--smallShadow);
         }
 
         h2 {
@@ -133,21 +102,17 @@
         }
 
         .nav-strip {
-            display: flex;
-            flex-wrap: wrap;
-            gap: .45rem;
-            margin-top: 2.2rem;
-            text-align: center;
-            justify-content: center
+            padding: 23px;
         }
 
             .nav-strip a {
                 text-decoration: none;
-				color: white;
-				background: var(--green);
-				border-radius: 999px;
-				padding: .48rem .72rem;
-				font-weight: 650;
+                color: white;
+                background: var(--primary);
+                border-radius: 999px;
+                padding: 7px 12px;
+                font-weight: bold;
+                margin: 3px 0
             }
 
         .key-item {
@@ -175,7 +140,7 @@
         .stat, .card {
             background: white;
             border: 1px solid white;
-            border-radius: var(--radius);
+            border-radius: 8px;
             box-shadow: var(--shadow);
             overflow: hidden;
         }
@@ -205,7 +170,7 @@
         }
 
         .section-head {
-            color: #fff;
+            color: white;
             display: flex;
             align-items: end;
             justify-content: space-between;
@@ -241,8 +206,6 @@
             border-radius: 999px;
             padding: .22rem .58rem;
             margin-bottom: 10px;
-            background: #E0EAEE;
-            color: #18526f;
             font-size: .82rem;
             font-weight: 700;
         }
@@ -255,26 +218,6 @@
             .status.warn {
                 background: #F5E9DE;
                 color: #814b17;
-            }
-
-            .status.bad {
-                background: #EEE1E0;
-                color: #80342e;
-            }
-
-        .progress {
-            height: .65rem;
-            border-radius: 999px;
-            background: #E2E4E4;
-            overflow: hidden;
-            margin: .7rem 0;
-        }
-
-            .progress span {
-                display: block;
-                width: var(--pct);
-                height: 100%;
-                background: linear-gradient(90deg, var(--green), var(--blue));
             }
 
         .timeline {
@@ -291,11 +234,11 @@
         }
 
         .event-date {
-            color: #fff;
+            color: white;
             border: 1px solid white;
             border-radius: 7px;
             padding: .7rem;
-            background: #2C5763;
+            background: var(--primary);
             font-weight: 800;
         }
 
@@ -367,13 +310,28 @@
                 inset: 0;
             }
 
+        .map {
+            position: relative;
+        }
+
+            .map a {
+                position: absolute;
+                height: 100%;
+                align-content: center;
+                right: 20px;
+                font-weight: bold;
+                top: 0;
+                color: var(--primary);
+                text-decoration: none;
+            }
+
         .caption {
             position: absolute;
             z-index: 1;
             left: 1rem;
             right: 1rem;
             bottom: 1rem;
-            color: #fff;
+            color: white;
             display: flex;
             align-items: end;
             justify-content: space-between;
@@ -444,30 +402,22 @@
             }
 
         @media (max-width: 900px) {
-            .top-card, .grid.two, .grid.three, .accommodation, .slide-shell {
+            .grid.two, .grid.three, .accommodation, .slide-shell {
                 grid-template-columns: 1fr;
-            }
-
-            .summary {
-                min-height: auto;
             }
 
             .slide-photo {
                 min-height: 24rem;
             }
 
-            .nav-strip a {
-                width: 100%
+            .header .nav-strip .menuText {
+                display: none
             }
         }
 
         @media (max-width: 560px) {
             main {
                 width: min(100% - 1rem, 1180px);
-            }
-
-            .top-card {
-                padding: 1rem;
             }
 
             .event {
@@ -498,7 +448,7 @@
 
         @media print {
             body {
-                background: #fff;
+                background: white;
             }
 
             .section-head {
@@ -510,7 +460,7 @@
                     color: var(--muted);
                 }
 
-            .card, .stat, .top-card {
+            .card, .stat {
                 box-shadow: none;
                 backdrop-filter: none;
                 break-inside: avoid;
@@ -524,31 +474,29 @@
                 min-height: 10rem;
                 print-color-adjust: exact;
             }
-
-            .summary {
-                min-height: auto;
-            }
         }
     </style>
 </head>
 <body>
     <main>
-        <section class="summary" id="resumo">
-            <div class="top-card">
-                <img src="Logo.png" class="logo">
-                <nav class="nav-strip" aria-label="Secções da viagem">
-                    <a href="#agenda">🗓️<label> Agenda</label></a>
-                    <a href="#voos">✈️<label> Voos</label></a>
-                    <a href="#alojamento">🏠<label> Alojamento</label></a>
-                    <a href="#carro">🚗<label> Carro</label></a>
-                    <a href="#interesses">🗺️<label> Locais</label></a>
-                    <a href="#comidas">🍽️<label> Comidas</label></a>
-                    <!--<a href="#orcamento">Pagamentos</a>-->
-                </nav>
-            </div>
+        <section class="header">
+            <nav class="nav-strip" aria-label="Secções da viagem">
+                <a href="#agenda">
+                    <label class="menuIcon">🗓️</label><label class="menuText"> Agenda</label></a>
+                <a href="#voos">
+                    <label class="menuIcon">✈️</label><label class="menuText"> Voos</label></a>
+                <a href="#alojamento">
+                    <label class="menuIcon">🏠</label><label class="menuText"> Alojamento</label></a>
+                <a href="#carro">
+                    <label class="menuIcon">🚗</label><label class="menuText"> Carro</label></a>
+                <a href="#interesses">
+                    <label class="menuIcon">🗺️</label><label class="menuText"> Locais</label></a>
+                <a href="#comidas">
+                    <label class="menuIcon">🍽</label>️<label class="menuText"> Comidas</label></a>
+            </nav>
         </section>
 
-        <section id="agenda">
+        <section id="agenda" style="margin-top: calc(80px - 1.5rem)">
             <div class="section-head">
                 <div>
                     <h2>Agenda prevista (15 a 23 de Agosto)</h2>
@@ -609,46 +557,9 @@
                 <aside class="card pad" id="foodDetails"></aside>
             </div>
         </section>
-
-        <!--<section id="orcamento">
-      <div class="section-head">
-        <div>
-          <h2>Pagamentos e orçamento</h2>
-        </div>
-      </div>
-      <div class="grid two">
-        <div class="card pad">
-          <h3>Estado do orçamento</h3>
-          <div class="progress" aria-label="Percentagem paga"><span id="paidProgress"></span></div>
-          <p class="muted" id="paidText"></p>
-        </div>
-        <div class="card pad">
-          <h3>Próximas ações</h3>
-          <div class="list" id="actions"></div>
-        </div>
-      </div>
-      <div class="card table-wrap" style="margin-top:1rem">
-        <table>
-          <thead>
-            <tr><th>Item</th><th>Responsável</th><th>Estado</th><th>Notas</th><th>Valor</th></tr>
-          </thead>
-          <tbody id="payments"></tbody>
-        </table>
-      </div>
-    </section>-->
     </main>
 
     <script>
-		const header = document.getElementsByClassName("top-card")[0];
-
-		window.addEventListener("scroll", () => {
-			if (window.scrollY > header.offsetHeight * 1.2) {
-				header.classList.add("compact");
-			} else {
-				header.classList.remove("compact");
-			}
-		});
-		
         const data = {
             trip: {
                 dates: "15 a 23 de Agosto",
@@ -662,7 +573,7 @@
                 host: "Booking (via Green Vacations)",
                 total: 2056,
                 paid: 1043,
-                notes: "Tem cozinha, máquina de lavar, estacionamento próximo e espaço para refeições em grupo. Confirmar taxa turística e política de cancelamento.",
+                notes: "Tem três quartos com cama de casal, duas casas de banho, terraço, ar condicionado, máquina de lavar louça, máquina de lavar roupa, secador, ferro de engomar e estacionamento ao ar livre num edifício perto. Taxa turística incluída no preço final.",
                 photos: [
                     "https://reservas.greenvacations.pt/aluguer/fotos/3/1774292784505e2297cbb163f927ebdf3d7f4df6a8/1774293272620fd938dcce46bc445350b4eb823e87.jpg",
                     "https://reservas.greenvacations.pt/aluguer/fotos/3/1774292784505e2297cbb163f927ebdf3d7f4df6a8/177429282064c2345ba9792f6e835cbc376a1ca6e7.jpg",
@@ -701,112 +612,114 @@
                 {
                     name: "Ilhéu de Vila Franca",
                     local: "Furnas",
+                    location: "https://maps.app.goo.gl/oCJ5vSZPJbPk798KA",
                     cost: "Barco pago",
                     plannedDate: "16 set, manhã",
                     duration: "3 horas",
                     priority: "Média",
                     image: "https://byacores.com/wp-content/uploads/2017/10/ilheu-vila-franca-campo-lchacal.jpg",
                     description: "Reserva natural com piscina circular no mar. Depende muito do estado do mar e dos bilhetes disponíveis.",
-                    tips: "Comprar bilhetes cedo; levar água, protetor solar e saco estanque."
+                    notes: "Comprar bilhetes cedo; levar água, protetor solar e saco estanque."
                 },
                 {
                     name: "Sete Cidades",
                     local: "Furnas",
+                    location: "Furnas",
                     cost: "Gratuito",
                     plannedDate: "13 set, manhã",
                     duration: "Meio dia",
                     priority: "Imperdível",
                     image: "https://byacores.com/wp-content/uploads/2017/10/IMG_8426.jpg",
                     description: "Miradouros sobre as lagoas Azul e Verde, estrada cénica e paragens para fotos. Boa opção para começar a viagem se o tempo estiver limpo.",
-                    tips: "Verificar webcam antes de sair; levar casaco leve e reservar tempo para o Miradouro da Boca do Inferno."
+                    notes: "Verificar webcam antes de sair; levar casaco leve e reservar tempo para o Miradouro da Boca do Inferno."
                 },
                 {
                     name: "Lagoa do Fogo",
                     local: "Furnas",
+                    location: "Furnas",
                     cost: "Gratuito",
                     plannedDate: "14 set, tarde",
                     duration: "2 a 3 horas",
                     priority: "Alta",
                     image: "https://commons.wikimedia.org/wiki/Special:FilePath/Sao%20Miguel%20-%20Lagoa%20do%20Fogo.jpg",
                     description: "Cratera vulcânica com uma das paisagens mais fortes da ilha. Pode combinar com Caldeira Velha ou Ribeira Grande.",
-                    tips: "Estacionamento limitado em época alta; confirmar regras de acesso sazonal."
+                    notes: "Estacionamento limitado em época alta; confirmar regras de acesso sazonal."
                 },
                 {
                     name: "Furnas e Terra Nostra",
                     local: "Furnas",
+                    location: "Furnas",
                     cost: "Pago",
                     plannedDate: "15 set",
                     duration: "Dia completo",
                     priority: "Imperdível",
                     image: "https://byacores.com/wp-content/uploads/2017/09/parque_terra_nostra.jpg",
                     description: "Jardim Terra Nostra, águas termais, fumarolas e cozido das Furnas. É a zona ideal para reservar restaurante com antecedência.",
-                    tips: "Levar fato de banho escuro, toalha e chinelos. Validar horários do parque."
+                    notes: "Levar fato de banho escuro, toalha e chinelos. Validar horários do parque."
                 },
                 {
                     name: "Observação de baleias",
                     local: "Furnas",
+                    location: "Furnas",
                     cost: "Pago",
                     plannedDate: "Por marcar",
                     duration: "3 horas",
                     priority: "Opcional",
                     image: "https://media-cdn.tripadvisor.com/media/attractions-splice-spp-674x446/0b/93/a8/dc.jpg",
                     description: "Atividade em barco com guias locais. Boa alternativa para uma manhã com mar calmo.",
-                    tips: "Comparar operadores, políticas de cancelamento e probabilidade de enjoo."
+                    notes: "Comparar operadores, políticas de cancelamento e probabilidade de enjoo."
                 }
             ],
             foods: [
                 {
                     name: "Ananás dos Açores",
                     local: "Fajã de Baixo",
+                    location: "Furnas",
                     cost: "Baixo",
                     plannedDate: "Por marcar",
                     place: "Plantação de ananases",
                     priority: "Média",
                     image: "https://commons.wikimedia.org/wiki/Special:FilePath/Azorean%20pineapple%20Ponta%20Delgada%2C%20S%C3%A3o%20Miguel%2C%20Azores%20%28A%C3%A7ores%29%20Archipelago%2C%20Portugal%20%2849051108891%29.jpg",
                     description: "Visita curta a estufas de ananás, com prova de fruta, compotas ou licor.",
-                    tips: "Combina bem com uma manhã leve em Ponta Delgada."
+                    notes: "Combina bem com uma manhã leve em Ponta Delgada."
                 },
                 {
                     name: "Cozido das Furnas",
                     local: "Furnas",
+                    location: "Furnas",
                     cost: "Pago",
                     plannedDate: "15 set, almoço",
                     place: "Restaurante Tony's ou Caldeiras & Vulcões",
                     priority: "Imperdível",
                     image: "https://commons.wikimedia.org/wiki/Special:FilePath/Cozido%20das%20Furnas%20%2850687782641%29.jpg",
                     description: "Prato cozinhado lentamente com o calor vulcânico das caldeiras. É uma das experiências gastronómicas mais típicas de São Miguel.",
-                    tips: "Reservar com antecedência e confirmar hora de levantamento do cozido."
+                    notes: "Reservar com antecedência e confirmar hora de levantamento do cozido."
                 },
                 {
                     name: "Queijadas da Vila",
                     local: "Vila Franca do Campo",
+                    location: "Furnas",
                     cost: "Baixo",
                     plannedDate: "16 set",
                     place: "Fábrica das Queijadas da Vila",
                     priority: "Alta",
                     image: "https://commons.wikimedia.org/wiki/Special:FilePath/Queijadas%20aus%20Vila%20Franca%20do%20Campo%2C%20Azoren%202016.JPG",
                     description: "Doce tradicional pequeno, cremoso e fácil de levar para uma pausa durante o passeio.",
-                    tips: "Comprar uma caixa para partilhar no carro ou levar para o alojamento."
+                    notes: "Comprar uma caixa para partilhar no carro ou levar para o alojamento."
                 },
                 {
                     name: "Lapas grelhadas",
                     local: "Rabo de Peixe",
+                    location: "Furnas",
                     cost: "Pago",
                     plannedDate: "Por marcar",
                     place: "Restaurante junto ao mar",
                     priority: "Alta",
                     image: "https://commons.wikimedia.org/wiki/Special:FilePath/Lapas%20grelhadas%2C%20Rabo%20de%20Peixe%20A%C3%A7ores.jpg",
                     description: "Marisco simples e muito típico, servido quente com alho, limão e molho. Boa opção para petisco de fim de tarde.",
-                    tips: "Pedir para partilhar e confirmar se há disponibilidade no dia."
+                    notes: "Pedir para partilhar e confirmar se há disponibilidade no dia."
                 }
             ],
-            /*payments: [
-              { item: "Voos ida", owner: "Cada pessoa", amount: 145, paid: 145, status: "Pago", notes: "Guardar cartões de embarque." },
-              { item: "Voos volta", owner: "Cada pessoa", amount: 138, paid: 0, status: "Por pagar", notes: "Confirmar antes do prazo." },
-              { item: "Alojamento", owner: "Bruno", amount: 780, paid: 390, status: "Parcial", notes: "Acertar saldo até ao check-in." },
-              { item: "Carro alugado", owner: "Miguel", amount: 315, paid: 100, status: "Parcial", notes: "Caução não incluída no custo." },
-              { item: "Terra Nostra", owner: "Grupo", amount: 64, paid: 0, status: "Por pagar", notes: "Estimativa para 4 pessoas." }
-            ],*/
             actions: [
                 "Confirmar nomes completos e documentos nos voos.",
                 "Fechar seguro e segundo condutor do carro.",
@@ -847,16 +760,19 @@
             renderCar();
             renderInterests();
             renderFoods();
-            //renderPayments();
         }
 
         function renderTimeline() {
+            const plannedItems = [
+                ...data.interests.filter(i => i.plannedDate && i.plannedDate.toLowerCase() !== "por marcar").map(i => ({ date: i.plannedDate, title: i.name, detail: `${i.duration} · ${i.cost}` })),
+                ...data.foods.filter(i => i.plannedDate && i.plannedDate.toLowerCase() !== "por marcar").map(i => ({ date: i.plannedDate, title: `Provar: ${i.name}`, detail: `${i.local} · ${i.cost}` }))
+            ].sort((a, b) => a.date.localeCompare(b.date));
+
             const items = [
                 { date: data.flights.outbound_date + " " + data.flights.outbound_depart, title: `Voo de ida: ${data.flights.from} - ${data.flights.to}`, detail: `${data.flights.outbound_depart} - ${data.flights.outbound_arrive} · ${data.flights.airline}` },
                 { date: data.car.pickupTime, title: `Recolha do carro: ${data.car.pickupPlace}`, detail: data.car.model },
                 { date: data.accommodation.checkIn, title: `Check-in: ${data.accommodation.name}`, detail: data.accommodation.address },
-                ...data.interests.filter(i => i.plannedDate && i.plannedDate.toLowerCase() !== "por marcar").map(i => ({ date: i.plannedDate, title: i.name, detail: `${i.duration} · ${i.cost}` })),
-                ...data.foods.filter(i => i.plannedDate && i.plannedDate.toLowerCase() !== "por marcar").map(i => ({ date: i.plannedDate, title: `Provar: ${i.name}`, detail: `${i.local} · ${i.cost}` })),
+                ...plannedItems.map(i => ({ date: i.date, title: i.title, detail: i.detail })),
                 { date: data.accommodation.checkOut, title: "Check-out", detail: data.accommodation.name },
                 { date: data.car.dropoffTime, title: `Entrega do carro · ${data.car.pickupPlace}`, detail: data.car.company },
                 { date: data.flights.return_date + " " + data.flights.return_depart, title: `Voo de volta: ${data.flights.from} - ${data.flights.to}`, detail: `${data.flights.return_depart} - ${data.flights.return_arrive} · ${data.flights.airline}` }
@@ -939,10 +855,10 @@
             document.getElementById(photoId).style = img(item.image || "");
             document.getElementById(photoId).innerHTML = `
         <div class="caption">
-          <div><span class="status">${item.priority || "Plano"}</span><h3>${item.name || "Item"}</h3></div>
+          <div><h3>${item.name || "Item"}</h3></div>
           <div class="slide-controls">
-            <button type="button" id="${prefix}Prev" aria-label="Anterior">&lt;</button>
-            <button type="button" id="${prefix}Next" aria-label="Seguinte">&gt;</button>
+            <button type="button" class="nav prev" id="${prefix}Prev" aria-label="Anterior">❮</button>
+            <button type="button" class="nav next" id="${prefix}Next" aria-label="Seguinte">❯</button>
           </div>
         </div>`;
 
@@ -952,13 +868,13 @@
         <h3>${item.name || "Por definir"}</h3>
         <p>${item.description || ""}</p>
         <div class="meta">
-          <div><small>Zona</small><strong>${item.local}</strong></div>
           <div><small>Data prevista</small><strong>${item.plannedDate || "Por marcar"}</strong></div>
+          <div class="map"><small>Zona</small><strong>${item.local}</strong><a href="${item.location}" target="_blank">NAVEGAR ❯</a></div>
           <div><small>${isFood ? "Local sugerido" : "Duração"}</small><strong>${isFood ? item.place || "-" : item.duration || "-"}</strong></div>
           <div><small>Prioridade</small><strong>${item.priority || "-"}</strong></div>
         </div>
-        <h3>Dicas</h3>
-        <p class="muted">${item.tips || ""}</p>
+        <h3>Notas</h3>
+        <p class="muted">${item.notes || ""}</p>
       `;
 
             document.getElementById(`${prefix}Prev`).addEventListener("click", () => {
@@ -990,40 +906,6 @@
             if (activeFood >= data.foods.length) activeFood = 0;
             renderSlide(data.foods, activeFood, "foodTabs", "foodPhoto", "foodDetails", "food");
         }
-
-        function renderPayments() {
-            const t = totals();
-            const percent = pct(t.paid, t.total);
-            document.getElementById("paidProgress").style = `--pct:${percent}%`;
-            document.getElementById("paidText").textContent = `${euro(t.paid)} pagos de ${euro(t.total)}.`;
-            document.getElementById("payments").innerHTML = data.payments.map(p => {
-                const due = Math.max(0, Number(p.amount || 0) - Number(p.paid || 0));
-                const cls = due === 0 ? "ok" : Number(p.paid || 0) > 0 ? "warn" : "bad";
-                return `<tr>
-          <td><strong>${p.item}</strong><br><span class="muted">${euro(p.paid)} pagos</span></td>
-          <td>${p.owner}</td>
-          <td><span class="status ${cls}">${p.status}</span></td>
-          <td>${p.notes}</td>
-          <td><strong>${euro(p.amount)}</strong><br><span class="muted">falta ${euro(due)}</span></td>
-        </tr>`;
-            }).join("");
-            document.getElementById("actions").innerHTML = data.actions.map(a => `<div class="row"><div>${a}</div></div>`).join("");
-        }
-
-        document.addEventListener("keydown", event => {
-            if (event.key === "ArrowLeft") {
-                activeInterest = (activeInterest - 1 + data.interests.length) % data.interests.length;
-                activeFood = (activeFood - 1 + data.foods.length) % data.foods.length;
-                renderInterests();
-                renderFoods();
-            }
-            if (event.key === "ArrowRight") {
-                activeInterest = (activeInterest + 1) % data.interests.length;
-                activeFood = (activeFood + 1) % data.foods.length;
-                renderInterests();
-                renderFoods();
-            }
-        });
 
         render();
   </script>
