@@ -11,8 +11,7 @@
             --secondary: #EFCB68;
             --ink: #10211D;
             --muted: #5C6F68;
-            --shadow: 0 22px 70px #071816;
-            --smallShadow: 0 6px 18px #071816;
+            --shadow: 0 6px 18px #071816;
         }
 
         * {
@@ -70,16 +69,16 @@
         }
 
         .header {
+			background: white;
+			box-shadow: var(--shadow);
+			height: 53px;
+			left: 0;
+			padding: 0;
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 70px;
-            background: white;
-            padding: 0;
-            text-align: center;
-            z-index: 999;
-            box-shadow: var(--smallShadow);
+			text-align: center;
+			top: 0;
+			width: 100%;
+			z-index: 999
         }
 
         h2 {
@@ -102,17 +101,18 @@
         }
 
         .nav-strip {
-            padding: 23px;
+            padding: 13px
         }
 
             .nav-strip a {
-                text-decoration: none;
-                color: white;
-                background: var(--primary);
-                border-radius: 999px;
-                padding: 7px 12px;
-                font-weight: bold;
-                margin: 3px 0
+				background: var(--primary);
+				border-radius: 999px;
+				color: white;
+				font-size: 18px;
+				font-weight: bold;
+				margin: 0 2px;
+				padding: 8px 12px;
+                text-decoration: none
             }
 
         .key-item {
@@ -239,11 +239,12 @@
             border-radius: 7px;
             padding: .7rem;
             background: var(--primary);
+            box-shadow: var(--shadow);
             font-weight: 800;
         }
 
         .media {
-            min-height: 14rem;
+            min-height: 19rem;
             background-size: cover;
             background-position: center;
             background-color: white;
@@ -263,7 +264,7 @@
         }
 
             .photo-grid div {
-                min-height: 9rem;
+                min-height: 19rem;
                 border-radius: 7px;
                 background-size: cover;
                 background-position: center;
@@ -496,7 +497,7 @@
             </nav>
         </section>
 
-        <section id="agenda" style="margin-top: calc(80px - 1.5rem)">
+        <section id="agenda" style="margin-top: calc(70px - 1.5rem)">
             <div class="section-head">
                 <div>
                     <h2>Agenda prevista (15 a 23 de Agosto)</h2>
@@ -577,8 +578,8 @@
                 photos: [
                     "https://reservas.greenvacations.pt/aluguer/fotos/3/1774292784505e2297cbb163f927ebdf3d7f4df6a8/1774293272620fd938dcce46bc445350b4eb823e87.jpg",
                     "https://reservas.greenvacations.pt/aluguer/fotos/3/1774292784505e2297cbb163f927ebdf3d7f4df6a8/177429282064c2345ba9792f6e835cbc376a1ca6e7.jpg",
-                    "https://reservas.greenvacations.pt/aluguer/fotos/3/1774292784505e2297cbb163f927ebdf3d7f4df6a8/17742928414fc6285e8ec3fe6d33b4a56bd01ec0c8.jpg",
-                    "https://reservas.greenvacations.pt/aluguer/fotos/3/1774292784505e2297cbb163f927ebdf3d7f4df6a8/17742928001b7c15c2888e27dc92b1f32912676a47.jpg"
+                    "https://reservas.greenvacations.pt/aluguer/fotos/3/1774292784505e2297cbb163f927ebdf3d7f4df6a8/17742928414fc6285e8ec3fe6d33b4a56bd01ec0c8.jpg"
+                    //"https://reservas.greenvacations.pt/aluguer/fotos/3/1774292784505e2297cbb163f927ebdf3d7f4df6a8/17742928001b7c15c2888e27dc92b1f32912676a47.jpg"
                 ]
             },
             car: {
@@ -586,7 +587,7 @@
                 model: "Volkswagen T-Cross (Gasolina)",
                 pickupPlace: "Aeroporto PDL",
                 pickupTime: "15 ago (sábado) 08:30",
-                dropoffPlace: "Aeroporto PDL",
+                dropoffPlace: "Estrada Regional 4-1A, 199 Caminho Da Serra Gorda, 9500-355",
                 dropoffTime: "23 ago (domingo) 19:30",
                 total: 432.27,
                 paid: 432.27,
@@ -760,6 +761,7 @@
             renderCar();
             renderInterests();
             renderFoods();
+			loadImages()
         }
 
         function renderTimeline() {
@@ -906,6 +908,32 @@
             if (activeFood >= data.foods.length) activeFood = 0;
             renderSlide(data.foods, activeFood, "foodTabs", "foodPhoto", "foodDetails", "food");
         }
+		
+		function loadImages() {
+			data.accommodation.photos.forEach(src => {
+				const link = document.createElement("link");
+				link.rel = "preload";
+				link.as = "image";
+				link.href = src;
+				document.head.appendChild(link);
+			});
+			
+			data.interests.forEach(src => {
+				const link = document.createElement("link");
+				link.rel = "preload";
+				link.as = "image";
+				link.href = src.image;
+				document.head.appendChild(link);
+			});
+			
+			data.foods.forEach(src => {
+				const link = document.createElement("link");
+				link.rel = "preload";
+				link.as = "image";
+				link.href = src.image;
+				document.head.appendChild(link);
+			});
+		}
 
         render();
   </script>
