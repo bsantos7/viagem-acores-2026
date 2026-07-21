@@ -414,6 +414,10 @@
             .header .nav-strip .menuText {
                 display: none
             }
+			
+			.googleMaps {
+				height: 400px
+			}
         }
 
         @media (max-width: 560px) {
@@ -491,9 +495,11 @@
                 <a href="#carro">
                     <label class="menuIcon">🚗</label><label class="menuText"> Carro</label></a>
                 <a href="#interesses">
-                    <label class="menuIcon">🗺️</label><label class="menuText"> Locais</label></a>
+                    <label class="menuIcon">📸️</label><label class="menuText"> Locais</label></a>
                 <a href="#comidas">
-                    <label class="menuIcon">🍽</label>️<label class="menuText"> Comidas</label></a>
+                    <label class="menuIcon">🍽️</label><label class="menuText"> Comidas</label></a>
+                <a href="#mapa">
+                    <label class="menuIcon">🗺️</label><label class="menuText"> Mapa</label></a>
             </nav>
         </section>
 
@@ -558,6 +564,15 @@
                 <aside class="card pad" id="foodDetails"></aside>
             </div>
         </section>
+		
+		<section id="mapa">
+            <div class="section-head">
+                <div>
+                    <h2>Mapa</h2>
+                </div>
+            </div>
+			<iframe class="googleMaps" src="https://www.google.com/maps/d/embed?mid=1ZNDbc_3ZSCIEwSxACJzYbqbT31wCAd8&ehbc=2E312F&noprof=1" width="100%" height="700"></iframe>
+		</section>
     </main>
 
     <script>
